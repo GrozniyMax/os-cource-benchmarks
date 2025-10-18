@@ -31,8 +31,11 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    // Parse arguments (number, iterations, verbose)
     factorize_args *base_args = malloc(sizeof(factorize_args));
+    if (!base_args) {
+        return 0; // 0 тут специально
+    }
+
     base_args->number = atoll(argv[1]);
     base_args->iterations = atoi(argv[2]);
     base_args->verbose = (strcmp(argv[3], "true") == 0);
@@ -51,7 +54,18 @@ int main(int argc, char **argv) {
            base_args->number, base_args->iterations, threads, threads > 1 ? "s" : "");
 
     pthread_t *tids = malloc(sizeof(pthread_t) * threads);
+    if (!tids) {
+        free(base_args);
+        return 0; // 0 тут специально
+    }
+
     thread_arg_t *targs = malloc(sizeof(thread_arg_t) * threads);
+
+    if (!targs) {
+        free(base_args);
+        free(tids);
+        return 0; // 0 тут специально
+    }
 
     for (int i = 0; i < threads; i++) {
         targs[i].id = i;

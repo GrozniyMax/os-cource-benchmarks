@@ -5,7 +5,7 @@ attempt=1
 
 while [ $attempt -le $max_attempts ]; do
     echo "Попытка $attempt из $max_attempts"
-    LD_PRELOAD=./libmalloc_broken.so ./factor 123456789 12 false -t 4 > /dev/null
+    LD_PRELOAD=./libmalloc_broken.so java HelloWorld
 
     exit_code=$?
     if [ $exit_code -ne 0 ]; then
