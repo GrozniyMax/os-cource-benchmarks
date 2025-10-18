@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <time.h>
 
 void disk_thpt_write_usage() {
     printf("Usage: disk_thpt_write [options]\n");
@@ -31,9 +31,9 @@ static struct option long_options[] = {
 };
 
 double get_time() {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec + tv.tv_usec / 1000000.0;
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return ts.tv_sec + ts.tv_nsec / 1000000000.0;
 }
 
 disk_thpt_write_args parse(int argc, char **argv) {
